@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import json
 import os
 import time
@@ -30,12 +29,9 @@ def last_row_des(): return len(ws_des['A'])
 ### initialize an array with the links you want to run the Lighthouse script on
 
 urls = [
-"https://www.enfluencive.com/collections/tricouri-topuri-barbati/products/tricou-urban-white",
-"https://www.enfluencive.com/collections/barbati/products/trening-urban-negru-barbati",
-"https://www.enfluencive.com/collections/barbati/products/hanorac-gri-barbati",
-"https://www.enfluencive.com/collections/barbati/products/sc",
-"https://www.enfluencive.com/collections/barbati/products/bcn?variant=39289170165921",
-"https://www.enfluencive.com/collections/barbati/products/cc",
+"https://www.enfluencive.com/collections/femei/products/compleu-take-me-out-nude?variant=40487126073505"
+"https://www.enfluencive.com/collections/toate-produsele-femei/products/set-4",
+"https://www.enfluencive.com/collections/toate-produsele-femei/products/compleu-take-me-out-alb?variant=40487092912289",
 ]
 
 ### set the 'base' object, in Python AKA - dictionary; for setting the Header forEach iteration in Excel based on the num_of_call
@@ -51,8 +47,7 @@ base = {
 
 def extract_info(run, preset):
 
-    header = [run, 'Product_Name', 'URL', 'First_Contentful_Paint', 'Speed_Index', 'Largest_Contentful_Paint', 'SEO', 'Performance', 'Best_Practices']
-
+    header = [run, 'Product_Name', 'URL', 'First_Contentful_Paint', 'Speed_Index', 'Largest_Contentful_Paint', 'Performance']
     if preset == 'desktop':     ### preset -> 2 values: 'desktop' & 'perf'(for mobile)
         last = last_row_des()+1
         working = ws_des
@@ -63,7 +58,7 @@ def extract_info(run, preset):
     if 'first' not in run.lower():
         last += 1
 
-    for i, r in enumerate('ABCDEFGHI'):
+    for i, r in enumerate('ABCDEFG'):
 
         working[r+str(last)].value = header[i]
 
@@ -82,15 +77,13 @@ def extract_info(run, preset):
 
         ### set the items you need from the JSON FILE here
         try: 
-            product_name = loaded_json["audits"]["largest-contentful-paint-element"]["details"]["items"][0]["node"]["nodeLabel"] ### get the name of the product to be descriptive
-            fcps = str(round(loaded_json["audits"]["first-contentful-paint"]["score"] * 100))
-            sis = str(round(loaded_json["audits"]["speed-index"]["score"] * 100))
-            lcps = str(round(loaded_json["audits"]["largest-contentful-paint"]["score"] * 100))
-            seo = str(round(loaded_json["categories"]["seo"]["score"] * 100))
-            performance = str(round(loaded_json["categories"]["performance"]["score"] * 100))
-            best_practices = str(round(loaded_json["categories"]["best-practices"]["score"] * 100))
+            Product_Name = loaded_json["audits"]["largest-contentful-paint-element"]["details"]["items"][0]["node"]["nodeLabel"] ### get the name of the product to be descriptive
+            First_Contentful_Paint = str(round(loaded_json["audits"]["first-contentful-paint"]["score"] * 100))
+            Speed_Index = str(round(loaded_json["audits"]["speed-index"]["score"] * 100))
+            Largest_Contentful_Paint = str(round(loaded_json["audits"]["largest-contentful-paint"]["score"] * 100))
+            Performance = str(round(loaded_json["categories"]["performance"]["score"] * 100))
         except Exception as e:
-            product_name = fcps = sis = lcps = seo = performance = best_practices = '-'
+            Product_Name = First_Contentful_Paint = Speed_Index = Largest_Contentful_Paint = Performance = '-'
             print(e)
 
         ### (1) if you want to add a new column for the report you need to create a new var as fcps, fcpdv for eg. (see below) -- these are coming from JSON FILE
@@ -100,12 +93,12 @@ def extract_info(run, preset):
         ### (5) go to the line where the enumeration was set and add another letter which corresponds with the next column in excel [...,JKLMN...]
 
         ### if you increase the columns for your report, don't forget to add them below -> data = [..., sidv] !!! steps -> (4) - (5)
-        data = [urls.index(url), product_name, url, fcps, sis, lcps, seo, performance, best_practices]
+        data = [urls.index(url), Product_Name, url, First_Contentful_Paint, Speed_Index, Largest_Contentful_Paint, Performance]
         if preset == 'desktop':
             last = last_row_des()+1
         else:
             last = last_row_mob()+1
-        for i, r in enumerate('ABCDEFGHI'):
+        for i, r in enumerate('ABCDEFG'):
             working[r+str(last)].value = data[i]
 
 ### here you can set how many times to run the test on the links
