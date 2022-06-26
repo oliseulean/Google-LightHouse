@@ -15,8 +15,8 @@ getdate = datetime.now().strftime("%m-%d-%y")
 
 ### set relative_path MAC/WINDOWS
 
-relative_path = 'C:\\Users\\seule\\OneDrive\\Desktop\\PythonResults\\'  ### WINDOWS -> \\..\\..\\
-# relative_path = '/Users/seuleanolimpi/Desktop/PythonReport/' ### MAC -> /../../
+# relative_path = 'C:\\Users\\seule\\OneDrive\\Desktop\\PythonResults\\'  ### WINDOWS -> \\..\\..\\
+relative_path = '/Users/admin/Desktop/PythonReport/' ### MAC -> /../../
 
 csv_file_mob = join(relative_path, 'lighthouse_mobile_' + getdate + '.csv')
 csv_file_des = join(relative_path, 'lighthouse_desktop_' + getdate + '.csv')
@@ -29,9 +29,7 @@ def last_row_des(): return len(ws_des['A'])
 ### initialize an array with the links you want to run the Lighthouse script on
 
 urls = [
-"https://www.enfluencive.com/collections/femei/products/compleu-take-me-out-nude?variant=40487126073505"
-"https://www.enfluencive.com/collections/toate-produsele-femei/products/set-4",
-"https://www.enfluencive.com/collections/toate-produsele-femei/products/compleu-take-me-out-alb?variant=40487092912289",
+"https://oliseulean.github.io/",
 ]
 
 ### set the 'base' object, in Python AKA - dictionary; for setting the Header forEach iteration in Excel based on the num_of_call
